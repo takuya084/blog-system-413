@@ -1,6 +1,5 @@
 <?php
 require_once(dirname(__FILE__).'/../../../functions/require.php');
-require_once(dirname(__FILE__).'/../../../functions/common.php');
 
 session_start();
 
@@ -54,8 +53,6 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 		$stmt->execute();
 
 		$client_id = getClientID($mail_address, $password, $pdo);
-		$blog_title = "ブログタイトル";
-
 		$sql = "insert into blog
 				(status,client_id,blog_title,created_at,updated_at)
 				values
@@ -66,11 +63,9 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 
 		mb_language("japanese");
 		mb_internal_encoding("UTF-8");
-
 		$mail_title = '新規ユーザー登録がありました';
 		$mail_body = $client_name.PHP_EOL;
 		$mail_body.= $mail_address;
-
 		mb_send_mail(ADMIN_MAIL_ADDRESS,$mail_title,$mail_body);
 
 		header('Location: '.SITE_URL.'index.php');
@@ -79,7 +74,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 	}
 }
 
- ?>
+?>
 
 
 <!DOCTYPE html>
@@ -180,6 +175,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 								<input type="password" class="form-control" placeholder="招待コードをお持ちの方のみがご登録頂けます。" required />
 							</div>
 						</div>
+
 						<div class="checkbox checkbox-css m-b-30">
 							<div class="checkbox checkbox-css m-b-30">
 								<input type="checkbox" id="agreement_checkbox" value="">
