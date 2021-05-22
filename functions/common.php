@@ -43,3 +43,7 @@ function getClientID($mail_address, $password, $pdo) {
     $user = $stmt->fetch();
     return $user ? $user : false;
 }
+
+function client_code(){
+    return substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 12);
+}

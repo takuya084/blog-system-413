@@ -8,6 +8,8 @@ $err = array();
 $client_name ='';
 $mail_address ='';
 $password ='';
+$invitation_code ='';
+$agreement_checkbox = '';
 
 if($_SERVER['REQUEST_METHOD'] !='POST'){
 	setToken();
@@ -17,6 +19,8 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 	$client_name =  $_GET['client_name'];
 	$mail_address =  $_GET['mail_address'];
 	$password =  $_GET['password'];
+	$invitation_code =  $_GET['invitation_code'];
+	$agreement_checkbox =  $_GET['agreement_checkbox'];
 
 	$pdo  = connectDb();
 
@@ -40,13 +44,28 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 		$err['password'] = 'パスワードを入力してください。';
 	}
 
+	if($invitation_code == ''){
+		$err['invitation_code'] = '招待コードを入力してください。';
+	}else{
+		if($invitation_code != 'BLOG_SYSTEM'){
+			$err['invitation_code'] = '招待コードが無効です。'
+		}
+	}
+
+	if(isset($agreement_checkbox)){
+		$test_alert = "<script type='text/javascript'>alert('checked!');</script>";
+		echo $test_alert;
+	}
+
+
 	if(empty($err)){
 		$sql = "insert into client
 				(status,client_code,client_name,mail_address,password,created_at,updated_at)
 				values
-				(1,1,:client_name,:mail_address,:password,now(),now())";
+				(1,:client_code,:client_name,:mail_address,:password,now(),now())";
 		$stmt->$pdo->prepare($sql);
-
+		$client_code = client_code();
+		$stmt->bindValue(':client_code',$client_code);
 		$stmt->bindValue(':client_name',$client_name);
 		$stmt->bindValue(':mail_address',$mail_address);
 		$stmt->bindValue(':password',$password);
@@ -150,7 +169,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 							<label class="control-label">メールアドレス <span class="text-danger">*</span></label>
 							<div class="row m-b-15">
 								<div class="col-md-12">
-									<input type="text" class="form-control" name="mail_address" value="<?php echo $h($mail_address) ?>" placeholder="" required />
+									<input type="text" class="form-control" name="mail_address" value="<?php echo h($mail_address) ?>" placeholder="" required />
 									<span class="help-block"><?php if(isset($err['mail_address'])) echo h($err['mail_address']); ?></span>
 								</div>
 							</div>
@@ -172,13 +191,13 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 						<label class="control-label">招待コード <span class="text-danger">*</span></label>
 						<div class="row m-b-15">
 							<div class="col-md-12">
-								<input type="password" class="form-control" placeholder="招待コードをお持ちの方のみがご登録頂けます。" required />
+								<input type="password" class="form-control" name="invitation_code" placeholder="招待コードをお持ちの方のみがご登録頂けます。" required />
 							</div>
 						</div>
 
 						<div class="checkbox checkbox-css m-b-30">
 							<div class="checkbox checkbox-css m-b-30">
-								<input type="checkbox" id="agreement_checkbox" value="">
+								<input type="checkbox" id="agreement_checkbox" name="agreement_checkbox"　value="">
 								<label for="agreement_checkbox">
 								<a href="javascript:;">利用規約</a> 及び <a href="javascript:;">プライバシーポリシー</a>に同意します。
 								</label>
