@@ -20,6 +20,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 	$mail_address =  $_GET['mail_address'];
 	$password =  $_GET['password'];
 	$invitation_code =  $_GET['invitation_code'];
+
 	$agreement_checkbox =  $_GET['agreement_checkbox'];
 
 	$pdo  = connectDb();
@@ -48,7 +49,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 		$err['invitation_code'] = '招待コードを入力してください。';
 	}else{
 		if($invitation_code != 'BLOG_SYSTEM'){
-			$err['invitation_code'] = '招待コードが無効です。'
+			$err['invitation_code'] = '招待コードが無効です。';
 		}
 	}
 
