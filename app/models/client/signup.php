@@ -20,8 +20,8 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 	$mail_address =  $_GET['mail_address'];
 	$password =  $_GET['password'];
 	$invitation_code =  $_GET['invitation_code'];
-
 	$agreement_checkbox =  $_GET['agreement_checkbox'];
+	//おかしい。。。
 
 	$pdo  = connectDb();
 
@@ -53,9 +53,8 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 		}
 	}
 
-	if(isset($agreement_checkbox)){
-		$test_alert = "<script type='text/javascript'>alert('checked!');</script>";
-		echo $test_alert;
+	if($agreement_checkbox == ''){
+		$err['agreement_checkbox'] = '規約の同意にチェックをしてください。';
 	}
 
 
@@ -189,21 +188,28 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 							</div>
 						</div>
 
-						<label class="control-label">招待コード <span class="text-danger">*</span></label>
-						<div class="row m-b-15">
-							<div class="col-md-12">
-								<input type="password" class="form-control" name="invitation_code" placeholder="招待コードをお持ちの方のみがご登録頂けます。" required />
+						<div class="form-group <?php if(isset($err['invitation_code']) && $err['invitation_code'] !='') echo 'has-error'; ?>"
+							<label class="control-label">招待コード <span class="text-danger">*</span></label>
+							<div class="row m-b-15">
+								<div class="col-md-12">
+									<input type="password" class="form-control" name="invitation_code" placeholder="招待コードをお持ちの方のみがご登録頂けます。" required />
+									<span class="help-block"><?php if(isset($err['invitation_code'])) echo h($err['invitation_code']);?></span>
+								</div>
 							</div>
 						</div>
 
-						<div class="checkbox checkbox-css m-b-30">
+						<div class="form-group <?php if(isset($err['agreement_checkbox']) && $err['agreement_checkbox'] !='') echo 'has-error'; ?>"
 							<div class="checkbox checkbox-css m-b-30">
-								<input type="checkbox" id="agreement_checkbox" name="agreement_checkbox"　value="">
-								<label for="agreement_checkbox">
-								<a href="javascript:;">利用規約</a> 及び <a href="javascript:;">プライバシーポリシー</a>に同意します。
-								</label>
+								<div class="checkbox checkbox-css m-b-30">
+									<input type="checkbox" id="agreement_checkbox" name="agreement_checkbox"　value="">
+									<label for="agreement_checkbox">
+										<a href="javascript:;">利用規約</a> 及び <a href="javascript:;">プライバシーポリシー</a>に同意します。
+									</label>
+									<span class="help-block"><?php if(isset($err['agreement_checkbox'])) echo h($err['agreement_checkbox']);?></span>
+								</div>
 							</div>
 						</div>
+
 						<div class="register-buttons">
 							<button type="submit" class="btn btn-primary btn-block btn-lg">アカウント作成</button>
 						</div>
