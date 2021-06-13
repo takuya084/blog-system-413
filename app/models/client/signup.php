@@ -16,13 +16,12 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 }else{
 	checkToken();
 
-	$client_name =  $_GET['client_name'];
-	$mail_address =  $_GET['mail_address'];
-	$password =  $_GET['password'];
-	$invitation_code =  $_GET['invitation_code'];
-	$agreement_checkbox =  $_GET['agreement_checkbox'];
-	//おかしい。。。
-
+	$client_name =  $_POST['client_name'];
+	$mail_address =  $_POST['mail_address'];
+	$password =  $_POST['password'];
+	$invitation_code =  $_POST['invitation_code'];
+	$agreement_checkbox =  $_POST['agreement_checkbox'];
+	$token =  $_POST['token'];
 	$pdo  = connectDb();
 
 	if($client_name == ''){
@@ -63,7 +62,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 				(status,client_code,client_name,mail_address,password,created_at,updated_at)
 				values
 				(1,:client_code,:client_name,:mail_address,:password,now(),now())";
-		$stmt->$pdo->prepare($sql);
+		$stmt = $pdo->prepare($sql);
 		$client_code = client_code();
 		$stmt->bindValue(':client_code',$client_code);
 		$stmt->bindValue(':client_name',$client_name);
@@ -71,7 +70,11 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 		$stmt->bindValue(':password',$password);
 		$stmt->execute();
 
+		print_r($stmt->errorInfo());
+exit;
+
 		$client_id = getClientID($mail_address, $password, $pdo);
+
 		$sql = "insert into blog
 				(status,client_id,blog_title,created_at,updated_at)
 				values
@@ -153,7 +156,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 				<!-- end register-header -->
 				<!-- begin register-content -->
 				<div class="register-content">
-					<form action="index.html" method="POST" class="margin-bottom-0">
+					<form action="" method="POST" class="margin-bottom-0">
 
 						<div class="form-group <?php if(isset($err['client_name']) && $err['client_name'] != '') echo 'has-error'; ?>"
 							<label class="control-label">アカウント名 <span class="text-danger">*</span></label>
@@ -211,7 +214,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 						</div>
 
 						<div class="register-buttons">
-							<button type="submit" class="btn btn-primary btn-block btn-lg">アカウント作成</button>
+							<input type="submit" class="btn btn-primary btn-block btn-lg" value="アカウント作成">
 						</div>
 						<div class="m-t-20 m-b-40 p-b-40 text-inverse">
 							既にアカウントをお持ちの方は<a href="login.php">こちら</a>

@@ -1,4 +1,5 @@
 <?php
+
 ini_set("date.timezone", "Asia/Tokyo");
 
 mb_language("japanese");

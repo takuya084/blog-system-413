@@ -1,10 +1,9 @@
 <?php
-
 function connectDb(){
 	try{
 		$pdo = new PDO(DSN, DB_USER, DB_PASSWORD);
 		$pdo->query('SET NAMES utf8');
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		//$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		return $pdo;
 	}catch(PDOException $e){
 		echo $e->getMessage();

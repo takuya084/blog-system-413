@@ -94,7 +94,7 @@
 								</label>
 							</div>
 							<div class="login-buttons">
-								<button type="submit" class="btn btn-success btn-block btn-lg">ログイン</button>
+								<input type="submit" class="btn btn-success btn-block btn-lg" value="ログイン">
 							</div>
 							<hr />
 							<p class="text-center text-grey-darker">
