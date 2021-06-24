@@ -70,17 +70,19 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 		$stmt->bindValue(':password',$password);
 		$stmt->execute();
 
-		print_r($stmt->errorInfo());
-exit;
+		//print_r($stmt->errorInfo());
+		//exit;
 
-		$client_id = getClientID($mail_address, $password, $pdo);
+		$client_id = (int)getClientID($mail_address, $password, $pdo);
+		//$client_id = getClientID($mail_address, $password, $pdo);
 
+		//var_dump($client_id);
+		//exit;
 		$sql = "insert into blog
-				(status,client_id,blog_title,created_at,updated_at)
+				(status,client_id,created_at,updated_at)
 				values
-				(1,:client_id,:blog_title,now(),now())";
+				(1,:client_id,now(),now())";
 		$stmt->bindValue(':client_id',$client_id);
-		$stmt->bindValue(':blog_title',$blog_title);
 		$stmt->execute();
 
 		mb_language("japanese");
