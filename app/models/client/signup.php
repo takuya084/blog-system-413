@@ -82,6 +82,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 				(status,client_id,created_at,updated_at)
 				values
 				(1,:client_id,now(),now())";
+		$stmt = $pdo->prepare($sql);
 		$stmt->bindValue(':client_id',$client_id);
 		$stmt->execute();
 
