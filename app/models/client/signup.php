@@ -160,11 +160,10 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 				<!-- begin register-content -->
 				<div class="register-content">
 					<form action="" method="POST" class="margin-bottom-0">
-
 						<div class="form-group <?php if(isset($err['client_name']) && $err['client_name'] != '') echo 'has-error'; ?>"
 							<label class="control-label">アカウント名 <span class="text-danger">*</span></label>
-							<div class="row row-space-10">
-								<div class="col-md-12 m-b-15">
+							<div class="row m-b-15">
+								<div class="col-md-12">
 									<input type="text" class="form-control" name="client_name" value="<?php echo h($client_name) ?>" placeholder="" required />
 									<span class="help-block"><?php if(isset($err['client_name'])) echo h($err['client_name']); ?></span>
 								</div>
@@ -175,7 +174,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 							<label class="control-label">メールアドレス <span class="text-danger">*</span></label>
 							<div class="row m-b-15">
 								<div class="col-md-12">
-									<input type="text" class="form-control" name="mail_address" value="<?php echo h($mail_address) ?>" placeholder="" required />
+									<input type="email" class="form-control" name="mail_address" value="<?php echo h($mail_address) ?>" placeholder="" required />
 									<span class="help-block"><?php if(isset($err['mail_address'])) echo h($err['mail_address']); ?></span>
 								</div>
 							</div>
@@ -185,11 +184,11 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 							<label class="control-label">パスワード  <span class="text-danger">*</span></label>
 							<div class="row m-b-15">
 								<div class="col-md-6">
-									<input type="text" class="form-control" name="password" placeholder="8文字以上" required />
+									<input type="password" class="form-control" name="password" placeholder="8文字以上" required />
 									<span class="help-block"><?php if(isset($err['password'])) echo h($err['password']);?></span>
 								</div>
 								<div class="col-md-6">
-									<input type="text" class="form-control" placeholder="再入力" required />
+									<input type="password" class="form-control" placeholder="再入力" required />
 								</div>
 							</div>
 						</div>
@@ -214,7 +213,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 									<span class="help-block"><?php if(isset($err['agreement_checkbox'])) echo h($err['agreement_checkbox']);?></span>
 								</div>
 							</div>
-						</div>
+
 
 						<div class="register-buttons">
 							<input type="submit" class="btn btn-primary btn-block btn-lg" value="アカウント作成">
@@ -228,6 +227,8 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 						</p>
 						<input type="hidden" name="token" value="<?php echo h($_SESSION['sstoken']); ?>" />
 					</form>
+				</div>
+
 				</div>
 				<!-- end register-content -->
 			</div>
