@@ -33,5 +33,8 @@ try {
 	}
 
 } catch (Exception $e) {
+	echo('<pre>');
+		var_dump($e);
+	echo('</pre>');	
 	exit;
 }

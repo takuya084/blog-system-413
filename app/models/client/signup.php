@@ -1,6 +1,5 @@
 <?php
 require_once(dirname(__FILE__).'/../../../functions/require.php');
-require_once(dirname(__FILE__).'/../../../functions/common.php');
 
 session_start();
 
@@ -9,16 +8,20 @@ $err = array();
 $client_name ='';
 $mail_address ='';
 $password ='';
+$invitation_code ='';
+$agreement_checkbox = '';
 
 if($_SERVER['REQUEST_METHOD'] !='POST'){
 	setToken();
 }else{
 	checkToken();
 
-	$client_name =  $_GET['client_name'];
-	$mail_address =  $_GET['mail_address'];
-	$password =  $_GET['password'];
-
+	$client_name =  $_POST['client_name'];
+	$mail_address =  $_POST['mail_address'];
+	$password =  $_POST['password'];
+	$invitation_code =  $_POST['invitation_code'];
+	$agreement_checkbox =  $_POST['agreement_checkbox'];
+	$token =  $_POST['token'];
 	$pdo  = connectDb();
 
 	if($client_name == ''){
@@ -41,36 +44,53 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 		$err['password'] = 'パスワードを入力してください。';
 	}
 
+	if($invitation_code == ''){
+		$err['invitation_code'] = '招待コードを入力してください。';
+	}else{
+		if($invitation_code != 'BLOG_SYSTEM'){
+			$err['invitation_code'] = '招待コードが無効です。';
+		}
+	}
+
+	if($agreement_checkbox == ''){
+		$err['agreement_checkbox'] = '規約の同意にチェックをしてください。';
+	}
+
+
 	if(empty($err)){
 		$sql = "insert into client
 				(status,client_code,client_name,mail_address,password,created_at,updated_at)
 				values
-				(1,1,:client_name,:mail_address,:password,now(),now())";
-		$stmt->$pdo->prepare($sql);
-
+				(1,:client_code,:client_name,:mail_address,:password,now(),now())";
+		$stmt = $pdo->prepare($sql);
+		$client_code = client_code();
+		$stmt->bindValue(':client_code',$client_code);
 		$stmt->bindValue(':client_name',$client_name);
 		$stmt->bindValue(':mail_address',$mail_address);
 		$stmt->bindValue(':password',$password);
 		$stmt->execute();
 
-		$client_id = getClientID($mail_address, $password, $pdo);
-		$blog_title = "ブログタイトル";
+		//print_r($stmt->errorInfo());
+		//exit;
 
+		$client_id = (int)getClientID($mail_address, $password, $pdo);
+		//$client_id = getClientID($mail_address, $password, $pdo);
+
+		//var_dump($client_id);
+		//exit;
 		$sql = "insert into blog
-				(status,client_id,blog_title,created_at,updated_at)
+				(status,client_id,created_at,updated_at)
 				values
-				(1,:client_id,:blog_title,now(),now())";
+				(1,:client_id,now(),now())";
+		$stmt = $pdo->prepare($sql);
 		$stmt->bindValue(':client_id',$client_id);
-		$stmt->bindValue(':blog_title',$blog_title);
 		$stmt->execute();
 
 		mb_language("japanese");
 		mb_internal_encoding("UTF-8");
-
 		$mail_title = '新規ユーザー登録がありました';
 		$mail_body = $client_name.PHP_EOL;
 		$mail_body.= $mail_address;
-
 		mb_send_mail(ADMIN_MAIL_ADDRESS,$mail_title,$mail_body);
 
 		header('Location: '.SITE_URL.'index.php');
@@ -79,7 +99,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 	}
 }
 
- ?>
+?>
 
 
 <!DOCTYPE html>
@@ -139,12 +159,11 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 				<!-- end register-header -->
 				<!-- begin register-content -->
 				<div class="register-content">
-					<form action="index.html" method="POST" class="margin-bottom-0">
-
+					<form action="" method="POST" class="margin-bottom-0">
 						<div class="form-group <?php if(isset($err['client_name']) && $err['client_name'] != '') echo 'has-error'; ?>"
 							<label class="control-label">アカウント名 <span class="text-danger">*</span></label>
-							<div class="row row-space-10">
-								<div class="col-md-12 m-b-15">
+							<div class="row m-b-15">
+								<div class="col-md-12">
 									<input type="text" class="form-control" name="client_name" value="<?php echo h($client_name) ?>" placeholder="" required />
 									<span class="help-block"><?php if(isset($err['client_name'])) echo h($err['client_name']); ?></span>
 								</div>
@@ -155,7 +174,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 							<label class="control-label">メールアドレス <span class="text-danger">*</span></label>
 							<div class="row m-b-15">
 								<div class="col-md-12">
-									<input type="text" class="form-control" name="mail_address" value="<?php echo $h($mail_address) ?>" placeholder="" required />
+									<input type="email" class="form-control" name="mail_address" value="<?php echo h($mail_address) ?>" placeholder="" required />
 									<span class="help-block"><?php if(isset($err['mail_address'])) echo h($err['mail_address']); ?></span>
 								</div>
 							</div>
@@ -165,31 +184,39 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 							<label class="control-label">パスワード  <span class="text-danger">*</span></label>
 							<div class="row m-b-15">
 								<div class="col-md-6">
-									<input type="text" class="form-control" name="password" placeholder="8文字以上" required />
+									<input type="password" class="form-control" name="password" placeholder="8文字以上" required />
 									<span class="help-block"><?php if(isset($err['password'])) echo h($err['password']);?></span>
 								</div>
 								<div class="col-md-6">
-									<input type="text" class="form-control" placeholder="再入力" required />
+									<input type="password" class="form-control" placeholder="再入力" required />
 								</div>
 							</div>
 						</div>
 
-						<label class="control-label">招待コード <span class="text-danger">*</span></label>
-						<div class="row m-b-15">
-							<div class="col-md-12">
-								<input type="password" class="form-control" placeholder="招待コードをお持ちの方のみがご登録頂けます。" required />
+						<div class="form-group <?php if(isset($err['invitation_code']) && $err['invitation_code'] !='') echo 'has-error'; ?>"
+							<label class="control-label">招待コード <span class="text-danger">*</span></label>
+							<div class="row m-b-15">
+								<div class="col-md-12">
+									<input type="password" class="form-control" name="invitation_code" placeholder="招待コードをお持ちの方のみがご登録頂けます。" required />
+									<span class="help-block"><?php if(isset($err['invitation_code'])) echo h($err['invitation_code']);?></span>
+								</div>
 							</div>
 						</div>
-						<div class="checkbox checkbox-css m-b-30">
+
+						<div class="form-group <?php if(isset($err['agreement_checkbox']) && $err['agreement_checkbox'] !='') echo 'has-error'; ?>"
 							<div class="checkbox checkbox-css m-b-30">
-								<input type="checkbox" id="agreement_checkbox" value="">
-								<label for="agreement_checkbox">
-								<a href="javascript:;">利用規約</a> 及び <a href="javascript:;">プライバシーポリシー</a>に同意します。
-								</label>
+								<div class="checkbox checkbox-css m-b-30">
+									<input type="checkbox" id="agreement_checkbox" name="agreement_checkbox"　value="">
+									<label for="agreement_checkbox">
+										<a href="javascript:;">利用規約</a> 及び <a href="javascript:;">プライバシーポリシー</a>に同意します。
+									</label>
+									<span class="help-block"><?php if(isset($err['agreement_checkbox'])) echo h($err['agreement_checkbox']);?></span>
+								</div>
 							</div>
-						</div>
+
+
 						<div class="register-buttons">
-							<button type="submit" class="btn btn-primary btn-block btn-lg">アカウント作成</button>
+							<input type="submit" class="btn btn-primary btn-block btn-lg" value="アカウント作成">
 						</div>
 						<div class="m-t-20 m-b-40 p-b-40 text-inverse">
 							既にアカウントをお持ちの方は<a href="login.php">こちら</a>
@@ -200,6 +227,8 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 						</p>
 						<input type="hidden" name="token" value="<?php echo h($_SESSION['sstoken']); ?>" />
 					</form>
+				</div>
+
 				</div>
 				<!-- end register-content -->
 			</div>

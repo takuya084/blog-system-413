@@ -1,5 +1,4 @@
 <?php
-
 function connectDb(){
 	try{
 		$pdo = new PDO(DSN, DB_USER, DB_PASSWORD);
@@ -29,7 +28,7 @@ function checkToken(){
 }
 
 function checkEmail($mail_address, $pdo){
-	$sql = "slect * from client where mail_address = :mail_address limit 1";
+	$sql = "select * from client where mail_address = :mail_address limit 1";
 	$stmt = $pdo -> prepare($sql);
 	$stmt -> execute(array(":mail_address" => $mail_address));
 	$user = $stmt -> fetch();
@@ -39,7 +38,14 @@ function checkEmail($mail_address, $pdo){
 function getClientID($mail_address, $password, $pdo) {
     $sql = "select id from client where mail_address = :mail_address and password = :password limit 1";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute(array(":mail_address" => $mail_address, ":password" => $password));
+	$stmt->bindValue(':mail_address',$mail_address,PDO::PARAM_STR);
+	$stmt->bindValue(':password',$password,PDO::PARAM_STR);
+    //$stmt->execute(array(":mail_address" => $mail_address, ":password" => $password));
+	$stmt->execute();
     $user = $stmt->fetch();
-    return $user ? $user : false;
+    return $user ? $user['id'] : false;
+}
+
+function client_code(){
+    return substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 12);
 }
