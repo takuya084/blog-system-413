@@ -21,7 +21,6 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 	$password =  $_POST['password'];
 	$invitation_code =  $_POST['invitation_code'];
 	$agreement_checkbox =  $_POST['agreement_checkbox'];
-	$token =  $_POST['token'];
 	$pdo  = connectDb();
 
 	if($client_name == ''){
@@ -52,7 +51,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 		}
 	}
 
-	if($agreement_checkbox == ''){
+	if($agreement_checkbox == 'NULL'){
 		$err['agreement_checkbox'] = '規約の同意にチェックをしてください。';
 	}
 
@@ -73,7 +72,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 		//print_r($stmt->errorInfo());
 		//exit;
 
-		$client_id = (int)getClientID($mail_address, $password, $pdo);
+		$client_id = (int)getClientId($mail_address, $password, $pdo);
 		//$client_id = getClientID($mail_address, $password, $pdo);
 
 		//var_dump($client_id);
@@ -213,22 +212,19 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 									<span class="help-block"><?php if(isset($err['agreement_checkbox'])) echo h($err['agreement_checkbox']);?></span>
 								</div>
 							</div>
-
-
-						<div class="register-buttons">
-							<input type="submit" class="btn btn-primary btn-block btn-lg" value="アカウント作成">
+							<div class="register-buttons">
+								<input type="submit" class="btn btn-primary btn-block btn-lg" value="アカウント作成">
+							</div>
+							<div class="m-t-20 m-b-40 p-b-40 text-inverse">
+								既にアカウントをお持ちの方は<a href="login.php">こちら</a>
+							</div>
+							<hr />
+							<p class="text-center">
+								&copy;2020 SENSE SHARE All Rights Reserved.
+							</p>
 						</div>
-						<div class="m-t-20 m-b-40 p-b-40 text-inverse">
-							既にアカウントをお持ちの方は<a href="login.php">こちら</a>
-						</div>
-						<hr />
-						<p class="text-center">
-							&copy;2020 SENSE SHARE All Rights Reserved.
-						</p>
 						<input type="hidden" name="token" value="<?php echo h($_SESSION['sstoken']); ?>" />
 					</form>
-				</div>
-
 				</div>
 				<!-- end register-content -->
 			</div>
