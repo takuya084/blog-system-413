@@ -69,14 +69,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 		$stmt->bindValue(':password',$password);
 		$stmt->execute();
 
-		//print_r($stmt->errorInfo());
-		//exit;
-
 		$client_id = (int)getClientId($mail_address, $password, $pdo);
-		//$client_id = getClientID($mail_address, $password, $pdo);
-
-		//var_dump($client_id);
-		//exit;
 		$sql = "insert into blog
 				(status,client_id,created_at,updated_at)
 				values
@@ -92,7 +85,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 		$mail_body.= $mail_address;
 		mb_send_mail(ADMIN_MAIL_ADDRESS,$mail_title,$mail_body);
 
-		header('Location: '.SITE_URL.'index.php');
+		header('Location: '.SITE_URL.'/signup/');
 		unset($pdo);
 		exit;
 	}

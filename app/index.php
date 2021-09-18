@@ -12,6 +12,7 @@ try {
 		include(dirname(__FILE__).'/models/client/signup.php');
 	} else {
 		if(!check_client_login()){
+		// if ($request_path == '/login/') {
 			// ログインされていなければ、ログイン画面を表示
 			include(dirname(__FILE__).'/models/client/login.php');
 		} else {
