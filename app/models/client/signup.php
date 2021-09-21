@@ -85,7 +85,7 @@ if($_SERVER['REQUEST_METHOD'] !='POST'){
 		$mail_body.= $mail_address;
 		mb_send_mail(ADMIN_MAIL_ADDRESS,$mail_title,$mail_body);
 
-		header('Location: '.SITE_URL.'/signup/');
+		header('Location:'.SITE_URL.'/blog/');
 		unset($pdo);
 		exit;
 	}

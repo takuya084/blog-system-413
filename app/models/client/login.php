@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 		<meta content="" name="description" />
 		<meta content="" name="author" />
 
-		!-- ================== BEGIN BASE CSS STYLE ================== -->
+		<!-- ================== BEGIN BASE CSS STYLE ================== -->
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
 		<link href="<?php echo CONTENTS_SERVER_URL ?>/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
 		<link href="<?php echo CONTENTS_SERVER_URL ?>/assets/plugins/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
@@ -185,10 +185,12 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 								<div class="invalid-feedback"></div>
 							</div>
 							<div class="checkbox checkbox-css m-b-30">
-								<input type="checkbox" id="auto_login" name="auto_login" value="1" />
-								<label for="auto_login">
-									ログイン情報を記憶する
-								</label>
+								<div class="checkbox checkbox-css m-b-30">
+									<input type="checkbox" id="auto_login" name="auto_login" value="1" />
+									<label for="auto_login">
+										ログイン情報を記憶する
+									</label>
+								</div>
 							</div>
 							<div class="login-buttons">
 								<input type="submit" class="btn btn-success btn-block btn-lg" value="ログイン">
@@ -207,8 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 			<!-- end login -->
 		</div>
 		<!-- end page container -->
-		!-- ================== BEGIN BASE JS ================== -->
-		<script src="<?php echo CONTENTS_SERVER_URL ?>/assets/plugins/jquery/jquery-3.3.1.min.js"></script>
+		<!-- ================== BEGIN BASE JS ================== -->
 		<script src="<?php echo CONTENTS_SERVER_URL ?>/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
 		<script src="<?php echo CONTENTS_SERVER_URL ?>/assets/plugins/bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
 		<!--[if lt IE 9]>
