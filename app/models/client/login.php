@@ -25,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 			exit;
 		}
 	}
-
 	setToken();
 } else {
 	checkToken();
@@ -210,6 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 		</div>
 		<!-- end page container -->
 		<!-- ================== BEGIN BASE JS ================== -->
+		<script src="<?php echo CONTENTS_SERVER_URL ?>/assets/plugins/jquery/jquery-3.3.1.min.js"></script>
 		<script src="<?php echo CONTENTS_SERVER_URL ?>/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
 		<script src="<?php echo CONTENTS_SERVER_URL ?>/assets/plugins/bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
 		<!--[if lt IE 9]>
