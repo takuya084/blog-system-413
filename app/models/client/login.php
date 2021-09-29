@@ -6,7 +6,6 @@ session_start();
 $pdo = connectDb();
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-
 	if (isset($_COOKIE['BLOG'])) {
 		$auto_login_key = $_COOKIE['BLOG'];
 		$sql = "select * from client_auto_login where c_key = :c_key and expire >= :expire limit 1";
