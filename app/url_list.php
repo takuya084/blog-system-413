@@ -1,6 +1,5 @@
 <?php
 $url_list = array();
-
 $url_list["/blog/"] = "/models/blog/index.php";
 $url_list["/blog/entry/"] = "/models/blog/entry.php";
 $url_list["/blog/category/"] = "/models/blog/category.php";

@@ -20,6 +20,8 @@ try {
 			if (isset($url_list[$request_path])) {
 				// アクセスされたURLのプログラムに処理を移譲
 				include(dirname(__FILE__).$url_list[$request_path]);
+			}else{
+				include(dirname(__FILE__).$url_list["/blog/"]);
 			}
 		}
 	}
