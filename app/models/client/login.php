@@ -1,3 +1,98 @@
+<?php
+require_once(dirname(__FILE__).'/../../../functions/require.php');
+
+session_start();
+
+$pdo = connectDb();
+
+if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+	if (isset($_COOKIE['BLOG'])) {
+		$auto_login_key = $_COOKIE['BLOG'];
+		$sql = "select * from client_auto_login where c_key = :c_key and expire >= :expire limit 1";
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute(array(":c_key" => $auto_login_key, "expire" => date('Y:m:d H:i:s')));
+		$row = $stmt->fetch();
+
+		if ($row) {
+			$client = getClientbyClientId($row['client_id'], $pdo);
+			session_regenerate_id(true);
+			$_SESSION['CLIENT'] = $client;
+
+			header('Location:'.SITE_URL.'/blog/');
+
+	  		unset($pdo);
+			exit;
+		}
+	}
+	setToken();
+} else {
+	checkToken();
+	$mail_address = $_POST['mail_address'];
+	$password = $_POST['password'];
+	$auto_login =$_POST['auto_login'];
+
+	$err = array();
+
+	if ($mail_address == '') {
+			$err['mail_address'] = 'メールアドレスを入力して下さい。';
+		} else {
+			if (!filter_var($mail_address, FILTER_VALIDATE_EMAIL)) {
+				$err['mail_address'] = 'メールアドレスが不正です。';
+			} else {
+				if (!checkEmail($mail_address, $pdo)) {
+					$err['mail_address'] = 'このメールアドレスが登録されていません。';
+				}
+			}
+	}
+
+	if ($password == '') {
+		$err['password'] = 'パスワードを入力して下さい。';
+	}
+
+	if ($mail_address && $password) {
+	    $client = getClientId($mail_address, $password, $pdo);
+	    if (!$client) {
+	      $err['password'] = 'パスワードが正しくありません。';
+	    }
+	}
+
+	if (empty($err)) {
+		session_regenerate_id(true);
+
+		$_SESSION['CLIENT'] = $client;
+
+		if (isset($_COOKIE['BLOG'])) {
+			$auto_login_key = $_COOKIE['BLOG'];
+			setcookie('BLOG', '', time()-86400, '/dev/blog-system-413/app/');
+			$sql = "delete from client_auto_login where c_key = :c_key";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(":c_key" => $auto_login_key));
+		}
+
+		if ($auto_login) {
+			$auto_login_key = sha1(uniqid(mt_rand(), true));
+			setcookie('BLOG', $auto_login_key, time()+3600*24*365, '/dev/blog-system-413/app/');
+			$sql = "insert into client_auto_login
+					(client_id, c_key, expire, created_at, updated_at)
+					values
+					(:client_id, :c_key, :expire, now(), now())";
+			$stmt = $pdo->prepare($sql);
+			$params = array(
+				":client_id" => $client['id'],
+				":c_key" => $auto_login_key,
+				":expire" => date('Y-m-d H:i:s', time()+3600*24*365)
+			);
+			$stmt->execute($params);
+		}
+		header('Location:'.SITE_URL.'/blog/');
+		exit;
+	}
+	unset($pdo);
+
+}
+
+?>
+
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="ja" class="ie8"> <![endif]-->
 <!--[if !IE]><!-->
@@ -11,7 +106,7 @@
 		<meta content="" name="description" />
 		<meta content="" name="author" />
 
-		!-- ================== BEGIN BASE CSS STYLE ================== -->
+		<!-- ================== BEGIN BASE CSS STYLE ================== -->
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
 		<link href="<?php echo CONTENTS_SERVER_URL ?>/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
 		<link href="<?php echo CONTENTS_SERVER_URL ?>/assets/plugins/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
@@ -78,7 +173,7 @@
 
 					<!-- begin login-content -->
 					<div class="login-content">
-						<form method="POST" class="margin-bottom-0">
+						<form method="POST" action="" class="margin-bottom-0">
 							<div class="form-group m-b-15">
 								<input id="mail_address" name="mail_address" type="text" class="form-control form-control-lg " placeholder="メールアドレス" value="" />
 								<div class="invalid-feedback"></div>
@@ -88,10 +183,12 @@
 								<div class="invalid-feedback"></div>
 							</div>
 							<div class="checkbox checkbox-css m-b-30">
-								<input type="checkbox" id="auto_login" name="auto_login" value="1" />
-								<label for="auto_login">
-									ログイン情報を記憶する
-								</label>
+								<div class="checkbox checkbox-css m-b-30">
+									<input type="checkbox" id="auto_login" name="auto_login" value="1" />
+									<label for="auto_login">
+										ログイン情報を記憶する
+									</label>
+								</div>
 							</div>
 							<div class="login-buttons">
 								<input type="submit" class="btn btn-success btn-block btn-lg" value="ログイン">
@@ -100,7 +197,7 @@
 							<p class="text-center text-grey-darker">
 								&copy;2019 SENSE SHARE All Rights Reserved.</p>
 
-							<input type="hidden" name="FLUXDEMOTOKEN" value="185babd965507a1b1c41bfa860e10defd7b41a55" />
+							<input type="hidden" name="token" value="<?php echo h($_SESSION['sstoken']); ?>" />
 						</form>
 					</div>
 					<!-- end login-content -->
@@ -110,7 +207,7 @@
 			<!-- end login -->
 		</div>
 		<!-- end page container -->
-		!-- ================== BEGIN BASE JS ================== -->
+		<!-- ================== BEGIN BASE JS ================== -->
 		<script src="<?php echo CONTENTS_SERVER_URL ?>/assets/plugins/jquery/jquery-3.3.1.min.js"></script>
 		<script src="<?php echo CONTENTS_SERVER_URL ?>/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
 		<script src="<?php echo CONTENTS_SERVER_URL ?>/assets/plugins/bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>

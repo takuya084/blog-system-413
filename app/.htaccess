@@ -3,6 +3,7 @@ RewriteEngine on
 
 # 無限ループになるためRewite対象から除外
 RewriteCond %{REQUEST_URI} !^/index.php$
+RewriteCond %{REQUEST_URI} !^/favicon.ico$
 
 # URLは全て/index.php?path=XXXに書き換え（QSAオプションで元のURLについていたパラメーターを結合）
 RewriteRule ^(.*)$ /index.php?path=%{REQUEST_URI} [L,QSA]
