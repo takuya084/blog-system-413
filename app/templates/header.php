@@ -22,7 +22,10 @@
         <span class="d-none d-md-inline">ハルジオン</span> <b class="caret"></b>
       </a>
       <div class="dropdown-menu dropdown-menu-right">
-        <a href="javascript:;" class="dropdown-item">ログアウト</a>
+        <!-- <a href="javascript:;" class="dropdown-item">ログアウト</a> -->
+		<a href="/logout/" class="dropdown-item">ログアウト</a>
+
+
       </div>
     </li>
   </ul>
