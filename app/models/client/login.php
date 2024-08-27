@@ -6,26 +6,26 @@ session_start();
 $pdo = connectDb();
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+	// 初めて画面にアクセスした時の処理
 	if (isset($_COOKIE['BLOG'])) {
 		$auto_login_key = $_COOKIE['BLOG'];
 		$sql = "select * from client_auto_login where c_key = :c_key and expire >= :expire limit 1";
 		$stmt = $pdo->prepare($sql);
-		$stmt->execute(array(":c_key" => $auto_login_key, "expire" => date('Y:m:d H:i:s')));
+		$stmt->execute(array(":c_key" => $auto_login_key, ":expire" => date('Y-m-d H:i:s')));
 		$row = $stmt->fetch();
 
 		if ($row) {
 			$client = getClientbyClientId($row['client_id'], $pdo);
 			session_regenerate_id(true);
 			$_SESSION['CLIENT'] = $client;
-
 			header('Location:'.SITE_URL.'/blog/');
-
-	  		unset($pdo);
+	  	unset($pdo);
 			exit;
 		}
 	}
 	setToken();
 } else {
+	// フォームからサブミットされた時の処理
 	checkToken();
 	$mail_address = $_POST['mail_address'];
 	$password = $_POST['password'];
@@ -58,9 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 
 	if (empty($err)) {
 		session_regenerate_id(true);
-
 		$_SESSION['CLIENT'] = $client;
-
+		// 自動ログイン情報を一度クリアする。
 		if (isset($_COOKIE['BLOG'])) {
 			$auto_login_key = $_COOKIE['BLOG'];
 			setcookie('BLOG', '', time()-86400, '/dev/blog-system-413/app/');
@@ -68,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute(array(":c_key" => $auto_login_key));
 		}
-
+		// 自動ログインを希望の場合はCookieとDBに情報を登録する。
 		if ($auto_login) {
 			$auto_login_key = sha1(uniqid(mt_rand(), true));
 			setcookie('BLOG', $auto_login_key, time()+3600*24*365, '/dev/blog-system-413/app/');
@@ -85,10 +84,10 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 			$stmt->execute($params);
 		}
 		header('Location:'.SITE_URL.'/blog/');
+		unset($pdo);
 		exit;
 	}
 	unset($pdo);
-
 }
 
 ?>

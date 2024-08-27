@@ -12,6 +12,8 @@ try {
 		include(dirname(__FILE__).'/models/client/signup.php');
 	} else {
 		if(!check_client_login()){
+		// if (TRUE){
+		// if (FALSE){
 		// if ($request_path == '/login/') {
 			// ログインされていなければ、ログイン画面を表示
 			include(dirname(__FILE__).'/models/client/login.php');
@@ -25,8 +27,6 @@ try {
 	}
 
 } catch (Exception $e) {
-	echo('<pre>');
 		var_dump($e);
-	echo('</pre>');
-	exit;
+		exit;
 }
