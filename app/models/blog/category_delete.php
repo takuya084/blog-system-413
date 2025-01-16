@@ -1,8 +1,4 @@
-test
-
 <?php
-require_once(dirname(__FILE__).'/../../../functions/require.php');
-session_start();
 checkToken(); 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

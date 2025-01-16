@@ -1,9 +1,4 @@
 <?php
-
-require_once(dirname(__FILE__).'/../../../functions/require.php');
-
-session_start();
-
 $pdo = connectDb();
 
 if (isset($_COOKIE['BLOG'])) {

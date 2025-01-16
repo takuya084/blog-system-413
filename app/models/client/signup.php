@@ -1,8 +1,4 @@
 <?php
-require_once(dirname(__FILE__).'/../../../functions/require.php');
-
-session_start();
-
 $err = array();
 
 $client_name ='';

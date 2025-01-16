@@ -1,7 +1,4 @@
 <?php
-require_once(dirname(__FILE__).'/../../../functions/require.php');
-session_start();
-
 $client_id = $_SESSION['CLIENT']['id'];
 
 // blog_id を取得

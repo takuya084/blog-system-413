@@ -1,8 +1,4 @@
 <?php
-require_once(dirname(__FILE__).'/../../../functions/require.php');
-
-session_start();
-
 $pdo = connectDb();
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
@@ -19,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 			session_regenerate_id(true);
 			$_SESSION['CLIENT'] = $client;
 			header('Location:'.SITE_URL.'/blog/');
-	  	unset($pdo);
+	  	// unset($pdo);
 			exit;
 		}
 	}
