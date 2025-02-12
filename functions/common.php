@@ -36,15 +36,17 @@ function checkEmail($mail_address, $pdo){
 	return $client ? true : false;
 }
 
-function getClientId($mail_address, $password, $pdo) {
-    $sql = "select id from client where mail_address = :mail_address and password = :password limit 1";
-    $stmt = $pdo->prepare($sql);
+function getClient($mail_address, $password, $pdo) {
+	$sql = "select id from client where mail_address = :mail_address and password = :password limit 1";
+	$stmt = $pdo->prepare($sql);
 	$stmt->bindValue(':mail_address',$mail_address,PDO::PARAM_STR);
 	$stmt->bindValue(':password',$password,PDO::PARAM_STR);
-    //$stmt->execute(array(":mail_address" => $mail_address, ":password" => $password));
+	//$stmt->execute(array(":mail_address" => $mail_address, ":password" => $password));
 	$stmt->execute();
-    $client = $stmt->fetch();
-    return $client ? $client['id'] : false;
+	// $client = $stmt->fetch();
+	// return $client ? $client['id'] : false;
+	$client = $stmt->fetch();
+	return $client ? $client : false;
 }
 
 function getClientbyClientId($client_id, $pdo) {

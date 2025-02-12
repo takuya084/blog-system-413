@@ -1,6 +1,5 @@
 <?php
 $client_id = $_SESSION['CLIENT']['id'];
-
 // blog_id を取得
 $pdo = connectDb();
 $sql = "SELECT id FROM blog WHERE client_id = :client_id LIMIT 1";
