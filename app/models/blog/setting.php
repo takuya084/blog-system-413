@@ -77,22 +77,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         updated_at = NOW()
         WHERE client_id = :client_id");
 
-      $stmt->execute([
-        ':blog_title' => $blog_title,
-        ':blog_description' => $blog_description,
-        ':blog_keywords' => $blog_keywords,
-        ':blog_author_name' => $blog_author_name,
-        ':blog_header_image' => $blog_header_image['file'] ?? null,
-        ':blog_header_image_ext' => $blog_header_image['ext'] ?? null,
-        ':blog_favicon_image' => $blog_favicon_image['file'] ?? null,
-        ':blog_favicon_image_ext' => $blog_favicon_image['ext'] ?? null,
-        ':blog_favicon180_image' => $blog_favicon180_image['file'] ?? null,
-        ':blog_favicon180_image_ext' => $blog_favicon180_image['ext'] ?? null,
-        ':blog_default_eye_catch_image' => $blog_default_eye_catch_image['file'] ?? null,
-        ':blog_default_eye_catch_image_ext' => $blog_default_eye_catch_image['ext'] ?? null,
-        ':analytics_ua_code' => $analytics_ua_code,
-        ':client_id' => $client_id
-      ]);
+      // $stmt->execute([
+      //   ':blog_title' => $blog_title,
+      //   ':blog_description' => $blog_description,
+      //   ':blog_keywords' => $blog_keywords,
+      //   ':blog_author_name' => $blog_author_name,
+      //   ':blog_header_image' => $blog_header_image['file'] ?? null,
+      //   ':blog_header_image_ext' => $blog_header_image['ext'] ?? null,
+      //   ':blog_favicon_image' => $blog_favicon_image['file'] ?? null,
+      //   ':blog_favicon_image_ext' => $blog_favicon_image['ext'] ?? null,
+      //   ':blog_favicon180_image' => $blog_favicon180_image['file'] ?? null,
+      //   ':blog_favicon180_image_ext' => $blog_favicon180_image['ext'] ?? null,
+      //   ':blog_default_eye_catch_image' => $blog_default_eye_catch_image['file'] ?? null,
+      //   ':blog_default_eye_catch_image_ext' => $blog_default_eye_catch_image['ext'] ?? null,
+      //   ':analytics_ua_code' => $analytics_ua_code,
+      //   ':client_id' => $client_id
+      // ]);
+
+      $stmt->bindValue(':blog_title', $blog_title, PDO::PARAM_STR);
+      $stmt->bindValue(':blog_description', $blog_description, PDO::PARAM_STR);
+      $stmt->bindValue(':blog_keywords', $blog_keywords, PDO::PARAM_STR);
+      $stmt->bindValue(':blog_author_name', $blog_author_name, PDO::PARAM_STR);
+      $stmt->bindValue(':blog_header_image_ext', $blog_header_image['ext'] ?? null, PDO::PARAM_STR);
+      $stmt->bindValue(':blog_favicon_image_ext', $blog_favicon_image['ext'] ?? null, PDO::PARAM_STR);
+      $stmt->bindValue(':blog_favicon180_image_ext', $blog_favicon180_image['ext'] ?? null, PDO::PARAM_STR);
+      $stmt->bindValue(':blog_default_eye_catch_image_ext', $blog_default_eye_catch_image['ext'] ?? null, PDO::PARAM_STR);
+      $stmt->bindValue(':analytics_ua_code', $analytics_ua_code, PDO::PARAM_STR);
+      $stmt->bindValue(':client_id', $client_id, PDO::PARAM_STR);
+      $stmt->bindValue(':blog_header_image', $blog_header_image['file'] ?? null, PDO::PARAM_LOB);
+      $stmt->bindValue(':blog_favicon_image', $blog_favicon_image['file'] ?? null, PDO::PARAM_LOB);
+      $stmt->bindValue(':blog_favicon180_image', $blog_favicon180_image['file'] ?? null, PDO::PARAM_LOB);
+      $stmt->bindValue(':blog_default_eye_catch_image', $blog_default_eye_catch_image['file'] ?? null, PDO::PARAM_LOB);
+
+      $stmt->execute();
+
       header('Location: ?success=1');
       // header('Location: ' . SITE_URL . 'blog/setting/?success=1');
       exit;
