@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $stmt->bindValue(':blog_favicon180_image_ext', $blog_favicon180_image['ext'] ?? null, PDO::PARAM_STR);
       $stmt->bindValue(':blog_default_eye_catch_image_ext', $blog_default_eye_catch_image['ext'] ?? null, PDO::PARAM_STR);
       $stmt->bindValue(':analytics_ua_code', $analytics_ua_code, PDO::PARAM_STR);
-      $stmt->bindValue(':client_id', $client_id, PDO::PARAM_STR);
+      $stmt->bindValue(':client_id', $client_id, PDO::PARAM_INT);
       $stmt->bindValue(':blog_header_image', $blog_header_image['file'] ?? null, PDO::PARAM_LOB);
       $stmt->bindValue(':blog_favicon_image', $blog_favicon_image['file'] ?? null, PDO::PARAM_LOB);
       $stmt->bindValue(':blog_favicon180_image', $blog_favicon180_image['file'] ?? null, PDO::PARAM_LOB);
@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!-- end page-header -->
 
 <?php if (isset($_GET['success'])): ?>
-  <div class="alert alert-success">設定が保存されました！</div>
+<div class="alert alert-success">設定が保存されました！</div>
 <?php endif; ?>
 
 <form method="POST" class="form-horizontal form-bordered" id="mainForm" enctype="multipart/form-data">
@@ -145,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input name="blog_title" type="text" class="form-control <?= isset($err['blog_title']) ? 'is-invalid' : '' ?>"
             value="<?= htmlspecialchars($data['blog_title'] ?? '') ?>" />
           <?php if (isset($err['blog_title'])): ?>
-            <div class="invalid-feedback text-danger"><?= $err['blog_title'] ?></div>
+          <div class="invalid-feedback text-danger"><?= $err['blog_title'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <textarea class="form-control <?= isset($err['blog_description']) ? 'is-invalid' : '' ?>"
             name="blog_description" rows="10"><?= htmlspecialchars($data['blog_description'] ?? '') ?></textarea>
           <?php if (isset($err['blog_description'])): ?>
-            <div class="invalid-feedback text-danger"><?= $err['blog_description'] ?></div>
+          <div class="invalid-feedback text-danger"><?= $err['blog_description'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -168,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             class="form-control <?= isset($err['blog_keywords']) ? 'is-invalid' : '' ?>"
             value="<?= htmlspecialchars($data['blog_keywords'] ?? '') ?>" />
           <?php if (isset($err['blog_keywords'])): ?>
-            <div class="invalid-feedback text-danger"><?= $err['blog_keywords'] ?></div>
+          <div class="invalid-feedback text-danger"><?= $err['blog_keywords'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -180,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             class="form-control <?= isset($err['blog_author_name']) ? 'is-invalid' : '' ?>"
             value="<?= htmlspecialchars($data['blog_author_name'] ?? '') ?>" />
           <?php if (isset($err['blog_author_name'])): ?>
-            <div class="invalid-feedback text-danger"><?= $err['blog_author_name'] ?></div>
+          <div class="invalid-feedback text-danger"><?= $err['blog_author_name'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -192,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             class="form-control <?= isset($err['analytics_ua_code']) ? 'is-invalid' : '' ?>"
             value="<?= htmlspecialchars($data['analytics_ua_code'] ?? '') ?>" />
           <?php if (isset($err['analytics_ua_code'])): ?>
-            <div class="invalid-feedback text-danger"><?= $err['analytics_ua_code'] ?></div>
+          <div class="invalid-feedback text-danger"><?= $err['analytics_ua_code'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -204,7 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input name="blog_header_image" type="file"
             class="form-control <?= isset($err['blog_header_image']) ? 'is-invalid' : '' ?>" />
           <?php if (isset($err['blog_header_image'])): ?>
-            <div class="invalid-feedback text-danger"><?= $err['blog_header_image'] ?></div>
+          <div class="invalid-feedback text-danger"><?= $err['blog_header_image'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -216,7 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input name="blog_favicon_image" type="file"
             class="form-control <?= isset($err['blog_favicon_image']) ? 'is-invalid' : '' ?>" />
           <?php if (isset($err['blog_favicon_image'])): ?>
-            <div class="invalid-feedback text-danger"><?= $err['blog_favicon_image'] ?></div>
+          <div class="invalid-feedback text-danger"><?= $err['blog_favicon_image'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -228,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input name="blog_favicon180_image" type="file"
             class="form-control <?= isset($err['blog_favicon180_image']) ? 'is-invalid' : '' ?>" />
           <?php if (isset($err['blog_favicon180_image'])): ?>
-            <div class="invalid-feedback text-danger"><?= $err['blog_favicon180_image'] ?></div>
+          <div class="invalid-feedback text-danger"><?= $err['blog_favicon180_image'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -240,7 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input name="blog_default_eye_catch_image" type="file"
             class="form-control <?= isset($err['blog_default_eye_catch_image']) ? 'is-invalid' : '' ?>" />
           <?php if (isset($err['blog_default_eye_catch_image'])): ?>
-            <div class="invalid-feedback text-danger"><?= $err['blog_default_eye_catch_image'] ?></div>
+          <div class="invalid-feedback text-danger"><?= $err['blog_default_eye_catch_image'] ?></div>
           <?php endif; ?>
         </div>
       </div>
