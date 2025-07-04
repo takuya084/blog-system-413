@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!-- end page-header -->
 
 <?php if (isset($_GET['success'])): ?>
-<div class="alert alert-success">設定が保存されました！</div>
+  <div class="alert alert-success">設定が保存されました！</div>
 <?php endif; ?>
 
 <form method="POST" class="form-horizontal form-bordered" id="mainForm" enctype="multipart/form-data">
@@ -145,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input name="blog_title" type="text" class="form-control <?= isset($err['blog_title']) ? 'is-invalid' : '' ?>"
             value="<?= htmlspecialchars($data['blog_title'] ?? '') ?>" />
           <?php if (isset($err['blog_title'])): ?>
-          <div class="invalid-feedback text-danger"><?= $err['blog_title'] ?></div>
+            <div class="invalid-feedback text-danger"><?= $err['blog_title'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <textarea class="form-control <?= isset($err['blog_description']) ? 'is-invalid' : '' ?>"
             name="blog_description" rows="10"><?= htmlspecialchars($data['blog_description'] ?? '') ?></textarea>
           <?php if (isset($err['blog_description'])): ?>
-          <div class="invalid-feedback text-danger"><?= $err['blog_description'] ?></div>
+            <div class="invalid-feedback text-danger"><?= $err['blog_description'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -168,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             class="form-control <?= isset($err['blog_keywords']) ? 'is-invalid' : '' ?>"
             value="<?= htmlspecialchars($data['blog_keywords'] ?? '') ?>" />
           <?php if (isset($err['blog_keywords'])): ?>
-          <div class="invalid-feedback text-danger"><?= $err['blog_keywords'] ?></div>
+            <div class="invalid-feedback text-danger"><?= $err['blog_keywords'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -180,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             class="form-control <?= isset($err['blog_author_name']) ? 'is-invalid' : '' ?>"
             value="<?= htmlspecialchars($data['blog_author_name'] ?? '') ?>" />
           <?php if (isset($err['blog_author_name'])): ?>
-          <div class="invalid-feedback text-danger"><?= $err['blog_author_name'] ?></div>
+            <div class="invalid-feedback text-danger"><?= $err['blog_author_name'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -192,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             class="form-control <?= isset($err['analytics_ua_code']) ? 'is-invalid' : '' ?>"
             value="<?= htmlspecialchars($data['analytics_ua_code'] ?? '') ?>" />
           <?php if (isset($err['analytics_ua_code'])): ?>
-          <div class="invalid-feedback text-danger"><?= $err['analytics_ua_code'] ?></div>
+            <div class="invalid-feedback text-danger"><?= $err['analytics_ua_code'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -200,11 +200,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="form-group row">
         <label class="col-md-2 col-form-label">ヘッダーイメージ（1200px*260px）</label>
         <div class="col-md-10">
-          <img src="" alt="" class="width-full m-b-10 img-responsive">
+
+          <?php if (!empty($data['blog_header_image'])): ?>
+            <img
+              src="<?php echo get_base64_header_string($data['blog_header_image_ext']) ?><?php echo base64_encode($data['blog_header_image']) ?>"
+              alt="header" class="width-full m-b-10 img-responsive">
+          <?php endif; ?>
+
           <input name="blog_header_image" type="file"
             class="form-control <?= isset($err['blog_header_image']) ? 'is-invalid' : '' ?>" />
           <?php if (isset($err['blog_header_image'])): ?>
-          <div class="invalid-feedback text-danger"><?= $err['blog_header_image'] ?></div>
+            <div class="invalid-feedback text-danger"><?= $err['blog_header_image'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -212,11 +218,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="form-group row">
         <label class="col-md-2 col-form-label">favicon.ico</label>
         <div class="col-md-10">
-          <img src="" alt="" class="m-b-10" width="40px">
+          <?php if (!empty($data['blog_favicon_image'])): ?>
+            <img
+              src="<?php echo get_base64_header_string($data['blog_favicon_image_ext']) ?><?php echo base64_encode($data['blog_favicon_image']) ?>"
+              alt="favicon" class="m-b-10" width="40px">
+          <?php endif; ?>
           <input name="blog_favicon_image" type="file"
             class="form-control <?= isset($err['blog_favicon_image']) ? 'is-invalid' : '' ?>" />
           <?php if (isset($err['blog_favicon_image'])): ?>
-          <div class="invalid-feedback text-danger"><?= $err['blog_favicon_image'] ?></div>
+            <div class="invalid-feedback text-danger"><?= $err['blog_favicon_image'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -224,11 +234,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="form-group row">
         <label class="col-md-2 col-form-label">apple-touch-icon-180x180.png</label>
         <div class="col-md-10">
-          <img src="" alt="" class="m-b-10" width="40px">
+          <?php if (!empty($data['blog_favicon180_image'])): ?>
+            <img
+              src="<?php echo get_base64_header_string($data['blog_favicon180_image_ext']) ?><?php echo base64_encode($data['blog_favicon180_image']) ?>"
+              alt="apple-touch-icon" class="m-b-10" width="40px">
+          <?php endif; ?>
           <input name="blog_favicon180_image" type="file"
             class="form-control <?= isset($err['blog_favicon180_image']) ? 'is-invalid' : '' ?>" />
           <?php if (isset($err['blog_favicon180_image'])): ?>
-          <div class="invalid-feedback text-danger"><?= $err['blog_favicon180_image'] ?></div>
+            <div class="invalid-feedback text-danger"><?= $err['blog_favicon180_image'] ?></div>
           <?php endif; ?>
         </div>
       </div>
@@ -236,11 +250,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="form-group row">
         <label class="col-md-2 col-form-label">デフォルトアイキャッチ画像（1200px*630px）</label>
         <div class="col-md-10">
-          <img src="" alt="" class="m-b-10" width="300px">
+          <?php if (!empty($data['blog_default_eye_catch_image'])): ?>
+            <img
+              src="<?php echo get_base64_header_string($data['blog_default_eye_catch_image_ext']) ?><?php echo base64_encode($data['blog_default_eye_catch_image']) ?>"
+              alt="default-eye-catch" class="m-b-10" width="300px">
+          <?php endif; ?>
           <input name="blog_default_eye_catch_image" type="file"
             class="form-control <?= isset($err['blog_default_eye_catch_image']) ? 'is-invalid' : '' ?>" />
           <?php if (isset($err['blog_default_eye_catch_image'])): ?>
-          <div class="invalid-feedback text-danger"><?= $err['blog_default_eye_catch_image'] ?></div>
+            <div class="invalid-feedback text-danger"><?= $err['blog_default_eye_catch_image'] ?></div>
           <?php endif; ?>
         </div>
       </div>
