@@ -1,6 +1,16 @@
-<?php include(TEMPLATE_PATH."/template_head.php"); ?>
+<?php
+$page_title="記事一覧";
+$breadcrumb_list = array();
+$breadcrumb_list[0]['title'] = 'HOME';
+$breadcrumb_list[0]['url'] = SITE_URL;
+$breadcrumb_list[1]['title'] = $page_title;
+$breadcrumb_list[1]['url'] = '';
+?>
+
+<?php include(TEMPLATE_PATH . "/template_head.php"); ?>
+
 <!-- begin page-header -->
-	<h1 class="page-header">記事一覧</h1>
+<h1 class="page-header">記事一覧</h1>
 <!-- end page-header -->
 
 <form method="GET" id="mainform">
@@ -13,25 +23,25 @@
 			<div class="result-container">
 
 				<!-- begin input-group -->
-<div class="input-group input-group-lg m-b-20">
-	<input type="text" id="search_keyword" name="search_keyword" class="form-control input-white" placeholder="検索キーワードを入力してください。" value="" />
-	<div class="input-group-append">
-		<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-fw"></i></button>
-	</div>
-</div>
-<!-- end input-group -->
+				<div class="input-group input-group-lg m-b-20">
+					<input type="text" id="search_keyword" name="search_keyword" class="form-control input-white" placeholder="検索キーワードを入力してください。" value="" />
+					<div class="input-group-append">
+						<button type="submit" class="btn btn-primary"><i class="fa fa-search fa-fw"></i></button>
+					</div>
+				</div>
+				<!-- end input-group -->
 
-<!-- begin dropdown -->
-<div class="dropdown pull-left">
-	<a href="javascript:;" class="btn btn-white btn-white-without-border dropdown-toggle" data-toggle="dropdown">
-		Filters by
-	</a>
-	<ul class="dropdown-menu" role="menu">
-				<li><a href="?search_filter=1&page=1">公開中</a></li>
-				<li><a href="?search_filter=2&page=1">非公開</a></li>
-			</ul>
-</div>
-<!-- end dropdown -->
+				<!-- begin dropdown -->
+				<div class="dropdown pull-left">
+					<a href="javascript:;" class="btn btn-white btn-white-without-border dropdown-toggle" data-toggle="dropdown">
+						Filters by
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="?search_filter=1&page=1">公開中</a></li>
+						<li><a href="?search_filter=2&page=1">非公開</a></li>
+					</ul>
+				</div>
+				<!-- end dropdown -->
 
 				<div class="width-150 pull-right m-b-10">
 					<a href="/blog/entry/" class="btn btn-inverse btn-block">新規作成</a>
@@ -40,7 +50,7 @@
 				<!-- begin panel -->
 				<div class="panel" style="clear:both">
 					<div class="panel-body panel-form">
-												<table class="table table-bordered table-valign-middle m-b-0">
+						<table class="table table-bordered table-valign-middle m-b-0">
 							<thead>
 								<tr class="bg-inverse">
 									<th class="width-70 text-center text-white"></th>
@@ -117,4 +127,4 @@
 	<!-- end row -->
 </form>
 
-<?php include(TEMPLATE_PATH."/template_bottom.php"); ?>
+<?php include(TEMPLATE_PATH . "/template_bottom.php"); ?>

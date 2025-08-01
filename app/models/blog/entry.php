@@ -1,3 +1,12 @@
+<?php
+$page_title="ブログ記事作成";
+$breadcrumb_list = array();
+$breadcrumb_list[0]['title'] = 'HOME';
+$breadcrumb_list[0]['url'] = SITE_URL;
+$breadcrumb_list[1]['title'] = $page_title;
+$breadcrumb_list[1]['url'] = '';
+?>
+
 <?php include(TEMPLATE_PATH."/template_head.php"); ?>
 
 				<!-- begin page-header -->

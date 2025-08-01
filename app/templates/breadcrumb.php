@@ -1,5 +1,13 @@
-<ol class="breadcrumb pull-right">
-  <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
-  <li class="breadcrumb-item"><a href="javascript:;">Page Options</a></li>
-  <li class="breadcrumb-item active">Blank Page</li>
-</ol>
+<?php if ($breadcrumb_list): ?>
+  <!-- begin breadcrumb -->
+  <ol class="breadcrumb pull-right">
+    <?php foreach ($breadcrumb_list as $breadcrumb): ?>
+      <?php if (!$breadcrumb['url']): ?>
+        <li class="breadcrumb-item active"><?php echo $breadcrumb['title'] ?></li>
+      <?php else: ?>
+        <li class="breadcrumb-item"><a href="<?php echo h($breadcrumb['url']) ?>"><?php echo $breadcrumb['title'] ?></a></li>
+      <?php endif; ?>
+    <?php endforeach; ?>
+  </ol>
+  <!-- end breadcrumb -->
+<?php endif; ?>

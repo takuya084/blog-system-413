@@ -1,4 +1,11 @@
 <?php
+	$page_title="カテゴリー管理";
+	$breadcrumb_list = array();
+	$breadcrumb_list[0]['title'] = 'HOME';
+	$breadcrumb_list[0]['url'] = SITE_URL;
+	$breadcrumb_list[1]['title'] = $page_title;
+	$breadcrumb_list[1]['url'] = '';
+
 	$client_id = $_SESSION['CLIENT']['id'];
 
 	// blog_id を取得
@@ -41,7 +48,7 @@
 
 <?php include(TEMPLATE_PATH."/template_head.php"); ?>
 <!-- begin page-header -->
-	<h1 class="page-header">ブログカテゴリー <small>header small text goes here...</small></h1>
+	<h1 class="page-header">カテゴリー管理</h1>
 <!-- end page-header -->
 
 <form method="GET" id="mainform">

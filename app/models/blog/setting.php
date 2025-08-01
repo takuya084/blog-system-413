@@ -1,6 +1,13 @@
 <?php
 require_once(dirname(__FILE__) . '/../../../functions/require.php');
 
+$page_title="ブログ基本設定";
+$breadcrumb_list = array();
+$breadcrumb_list[0]['title'] = 'HOME';
+$breadcrumb_list[0]['url'] = SITE_URL;
+$breadcrumb_list[1]['title'] = $page_title;
+$breadcrumb_list[1]['url'] = '';
+
 $err = [];
 $client_id = $_SESSION['CLIENT']['id'];
 $pdo = connectDb();
