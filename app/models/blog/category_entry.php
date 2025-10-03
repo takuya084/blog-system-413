@@ -1,4 +1,8 @@
 <?php
+$page_title = '';
+$page_base_head_tag_template = '';
+$page_base_body_tag_template = '';
+
 $client_id = $_SESSION['CLIENT']['id'];
 // blog_id を取得
 $pdo = connectDb();

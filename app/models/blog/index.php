@@ -1,5 +1,8 @@
 <?php
 $page_title="記事一覧";
+$page_base_head_tag_template = '';
+$page_base_body_tag_template = '';
+
 $breadcrumb_list = array();
 $breadcrumb_list[0]['title'] = 'HOME';
 $breadcrumb_list[0]['url'] = SITE_URL;
